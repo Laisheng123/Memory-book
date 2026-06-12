@@ -1,0 +1,9 @@
+{
+  "name": "memory-tree-landing",
+  "version": "1.0.0",
+  "description": "纪念树产品落地页 — 用语音记录老人故事，AI转写，精装成书",
+  "scripts": {
+    "dev": "npx serve . -p 3000",
+    "start": "npx serve . -p 3000"
+  }
+}
