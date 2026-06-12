@@ -351,10 +351,11 @@
         <div class="cta-tree" aria-hidden="true"></div>
         <h2>今天录一段，<br />留给明天翻阅</h2>
         <p>纪念树，让长辈的声音成为家族最珍贵的藏书。</p>
-        <form class="cta-form" action="#" method="post">
-          <input type="tel" name="phone" placeholder="输入手机号，获取制作链接" required aria-label="手机号" />
+        <form class="cta-form" action="#" method="post" novalidate>
+          <input type="tel" name="phone" placeholder="输入手机号，获取制作链接" required aria-label="手机号" autocomplete="tel" inputmode="numeric" maxlength="11" />
           <button type="submit" class="btn btn-primary">获取免费体验</button>
         </form>
+        <p class="cta-message" role="status" aria-live="polite" hidden></p>
         <p class="cta-hint">提交即表示同意《用户协议》与《隐私政策》</p>
       </div>
     </section>
@@ -400,6 +401,7 @@
     </div>
   </footer>
 
+  <script src="js/config.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

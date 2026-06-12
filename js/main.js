@@ -41,15 +41,64 @@ document
     observer.observe(el);
   });
 
-// CTA form
+// CTA form → Supabase
 const ctaForm = document.querySelector('.cta-form');
-ctaForm?.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const phone = ctaForm.querySelector('input[name="phone"]').value.trim();
+const ctaMessage = document.querySelector('.cta-message');
+
+function showCtaMessage(text, type) {
+  if (!ctaMessage) return;
+  ctaMessage.textContent = text;
+  ctaMessage.className = `cta-message cta-message--${type}`;
+  ctaMessage.hidden = false;
+}
+
+async function submitLead(phone) {
+  const res = await fetch(`${window.SUPABASE_URL}/rest/v1/leads`, {
+    method: 'POST',
+    headers: {
+      apikey: window.SUPABASE_KEY,
+      Authorization: `Bearer ${window.SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      Prefer: 'return=minimal',
+    },
+    body: JSON.stringify({ phone }),
+  });
+
+  if (!res.ok) {
+    const detail = await res.text();
+    throw new Error(detail || `提交失败（${res.status}）`);
+  }
+}
+
+async function handleCtaSubmit() {
+  const phoneInput = ctaForm.querySelector('input[name="phone"]');
+  const submitBtn = ctaForm.querySelector('button[type="submit"]');
+  const phone = phoneInput.value.trim();
+
   if (!/^1\d{10}$/.test(phone)) {
-    alert('请输入正确的手机号码');
+    showCtaMessage('请输入正确的 11 位手机号码（以 1 开头的 11 位数字）', 'error');
+    phoneInput.focus();
     return;
   }
-  alert('感谢关注！制作链接将发送至您的手机：' + phone);
-  ctaForm.reset();
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = '提交中…';
+  ctaMessage.hidden = true;
+
+  try {
+    await submitLead(phone);
+    showCtaMessage('提交成功！制作链接将发送至您的手机：' + phone, 'success');
+    ctaForm.reset();
+  } catch (err) {
+    console.error('Lead submit failed:', err);
+    showCtaMessage('提交失败，请稍后重试', 'error');
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = '获取免费体验';
+  }
+}
+
+ctaForm?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  handleCtaSubmit();
 });

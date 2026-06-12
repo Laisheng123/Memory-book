@@ -24,3 +24,22 @@ npm run dev
 ## 技术栈
 
 纯静态页面：HTML + CSS + JavaScript，无需构建步骤。
+
+## Supabase 手机号收集
+
+落地页 CTA 表单会将手机号写入 Supabase `leads` 表。
+
+### 1. 创建数据表
+
+在 [Supabase Dashboard](https://supabase.com/dashboard/project/pmdabxzspboknlhzvgxi/sql) → **SQL Editor** 中执行 `supabase/schema.sql`。
+
+### 2. 配置
+
+Supabase 连接信息在 `js/config.js`：
+
+- URL: `https://pmdabxzspboknlhzvgxi.supabase.co`
+- Key: publishable key（可暴露在前端）
+
+### 3. 查看提交记录
+
+Dashboard → **Table Editor** → `leads` 表。
